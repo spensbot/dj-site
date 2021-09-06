@@ -33,5 +33,38 @@ module.exports = {
       },
       __key: "pages",
     },
+    // {
+    //   resolve: `gatsby-plugin-prefetch-google-fonts`,
+    //   options: {
+    //     fonts: [
+    //       {
+    //         family: `Oswald`,
+    //         subsets: [`latin`],
+    //       },
+    //       {
+    //         family: `Open Sans`,
+    //         variants: [`400`, `700`]
+    //       },
+    //       {
+    //         family: `Bebas+Neue`
+    //       },
+    //       {
+    //         family: `Roboto`,
+    //         variant: [`100`, `400`, `700`]
+    //       },
+    //       {
+    //         family: `Pacifico`
+    //       }
+    //     ],
+    //   },
+    // },
+    // {
+    //   resolve: 'gatsby-plugin-web-font-loader',
+    //   options: {
+    //     google: {
+    //       families: ['Bebass Neue', 'Roboto', 'Pacifico']
+    //     }
+    //   }
+    // },
   ],
 };
