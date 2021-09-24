@@ -1,6 +1,6 @@
 import * as React from "react"
 import styled from 'styled-components'
-import Planning from '../components/Planning'
+import Planner from '../components/Planner/Planner'
 import Title from '../components/Title'
 import About from '../components/About'
 import Testimonials from '../components/Testimonials'
@@ -21,7 +21,7 @@ export default function indexPage() {
       <S />
       <Equipment />
       <S />
-      <Planning />
+      <Planner />
       <S />
     </Layout>
   )
