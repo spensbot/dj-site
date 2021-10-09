@@ -38,7 +38,7 @@ export default function Modal() {
 
   if (portalRoot) return ReactDOM.createPortal(child, portalRoot)
 
-  return 
+  return null
 }
 
 const Root = styled.div`
