@@ -4,10 +4,31 @@ import Container from '../Container'
 import Field from './Field'
 import SubmitButton from './SubmitButton'
 import { State, stateKeys } from './State'
+import { fieldsInfo } from './Field'
+
+const SAVE_KEY = 'plannerState'
+
+function getDefaultState() {
+  return { [stateKeys[0]]: fieldsInfo[stateKeys[0]].def }
+}
 
 export default function Planner() {
-  const [state, setState] = useState<State>({})
+  let startingState = getDefaultState()
+  const saveString = localStorage.getItem(SAVE_KEY)
+  if (saveString) startingState = JSON.parse(saveString)
+
+  const [state, setStateRaw] = useState<State>(startingState)
   const [selected, setSelected] = useState<keyof State | null>(stateKeys[0])
+
+  const setState = (newState: State) => {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(newState))
+    setStateRaw(newState)
+  }
+
+  const resetState = () => {
+    setState(getDefaultState())
+    setSelected(stateKeys[0])
+  }
 
   return (
     <Container>
@@ -19,7 +40,7 @@ export default function Planner() {
       <Fields>
         {stateKeys.map(stateKey => <Field key={stateKey} stateKey={stateKey} selected={selected} state={state} setState={setState} setSelected={setSelected}/>)}
       </Fields>
-      <SubmitButton state={state} setSelected={setSelected}/>
+      <SubmitButton state={state} setState={setState} setSelected={setSelected} resetState={resetState} />
     </Container>
   )
 }
@@ -29,7 +50,7 @@ const Root = styled.div`
 `
 
 const Fields = styled.div`
-
+  margin-bottom: 0.5rem;
 `
 
 const PlanningTitle = styled.h2`
