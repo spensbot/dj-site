@@ -14,8 +14,10 @@ function getDefaultState() {
 
 export default function Planner() {
   let startingState = getDefaultState()
-  const saveString = localStorage.getItem(SAVE_KEY)
-  if (saveString) startingState = JSON.parse(saveString)
+  if (typeof window !== 'undefined') {
+    const saveString = localStorage.getItem(SAVE_KEY)
+    if (saveString) startingState = JSON.parse(saveString)
+  }
 
   const [state, setStateRaw] = useState<State>(startingState)
   const [selected, setSelected] = useState<keyof State | null>(stateKeys[0])
