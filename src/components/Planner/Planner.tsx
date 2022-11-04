@@ -1,12 +1,12 @@
 import React, { useState } from "react"
-import styled from 'styled-components'
-import Container from '../Container'
-import Field from './Field'
-import SubmitButton from './SubmitButton'
-import { State, stateKeys } from './State'
-import { fieldsInfo } from './Field'
+import styled from "styled-components"
+import Container from "../Container"
+import Field from "./Field"
+import SubmitButton from "./SubmitButton"
+import { State, stateKeys } from "./State"
+import { fieldsInfo } from "./Field"
 
-const SAVE_KEY = 'plannerState'
+const SAVE_KEY = "plannerState"
 
 function getDefaultState() {
   return { [stateKeys[0]]: fieldsInfo[stateKeys[0]].def }
@@ -14,7 +14,7 @@ function getDefaultState() {
 
 export default function Planner() {
   let startingState = getDefaultState()
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     const saveString = localStorage.getItem(SAVE_KEY)
     if (saveString) startingState = JSON.parse(saveString)
   }
@@ -36,29 +36,37 @@ export default function Planner() {
     <Container>
       <PlanningTitle>Wedding Plan</PlanningTitle>
       <PlanningSubtitle>
-        <p>Fill out this form to give me an idea of how you want your reception to go.</p>
-        <p>If you want to move forward, we'll finalize the details and create a contract later :)</p>
+        <p>This form will help me plan for your reception</p>
+        <p>We can work out the details and create a contract later :)</p>
       </PlanningSubtitle>
       <Fields>
-        {stateKeys.map(stateKey => <Field key={stateKey} stateKey={stateKey} selected={selected} state={state} setState={setState} setSelected={setSelected}/>)}
+        {stateKeys.map((stateKey) => (
+          <Field
+            key={stateKey}
+            stateKey={stateKey}
+            selected={selected}
+            state={state}
+            setState={setState}
+            setSelected={setSelected}
+          />
+        ))}
       </Fields>
-      <SubmitButton state={state} setState={setState} setSelected={setSelected} resetState={resetState} />
+      <SubmitButton
+        state={state}
+        setState={setState}
+        setSelected={setSelected}
+        resetState={resetState}
+      />
     </Container>
   )
 }
 
-const Root = styled.div`
-
-`
+const Root = styled.div``
 
 const Fields = styled.div`
   margin-bottom: 0.5rem;
 `
 
-const PlanningTitle = styled.h2`
+const PlanningTitle = styled.h2``
 
-`
-
-const PlanningSubtitle = styled.h4`
-
-`
+const PlanningSubtitle = styled.h4``

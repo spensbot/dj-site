@@ -1,8 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { State } from './State'
-import dayjs from 'dayjs'
-import * as EC from './EditComponents'
+import React from "react"
+import styled from "styled-components"
+import { State, stateKeys } from "./State"
+import dayjs from "dayjs"
+import * as EC from "./EditComponents"
+import DocMaker from "../../util/DocMaker"
 
 interface FieldProps {
   stateKey: keyof State
@@ -12,98 +13,144 @@ interface FieldProps {
   setState: (newState: State) => void
 }
 
-export const fieldsInfo: { [key in keyof Required<State>]: {
-  EditComponent: (props: EC.Props<State[key]>) => React.ReactElement
-  def: State[key]
-  label: string
-  valToString?: (val: State[key]) => string
-  explanation?: string
-  insight?: string[]
-} } = {
-  date: {
-    EditComponent: EC.Date_, def: dayjs().unix(), label: 'Date',
-    valToString: val => dayjs(val).format('DD/MM/YYYY'),
-    explanation: 'When is the wedding?'
-  },
-  location: {
-    EditComponent: EC.Text_, def: '', label: 'Location',
-    explanation: 'Where will the wedding take place?'
-  },
-  indoor: {
-    EditComponent: EC.Bool_, def: true, label: 'Indoors?',
-    explanation: 'Will the reception take place indoors. Will the Dance Floor/DJ Booth be covered from the elements?'
-  },
-  attendeeCount: { EditComponent: EC.Slider_, def: 50, label: 'Guests',
-    explanation: `How many guests will attend?`,
-    insight: [
-      'Very Small, We want a dance party with just us',
-      ''
-    ]
-  },
-  internet: { EditComponent: EC.Bool_, def: true, label: 'Internet?',
-    explanation: `Will there be internet at the venue?`
-  },
-  planner: { EditComponent: EC.Text_, def: 'DJ', label: 'Organizer',
-    explanation: `Who should the DJ/Announcer look to for timing of announcements?
-    Note that this can only be 1 person`
-  },
-  announcer: { EditComponent: EC.Text_, def: 'DJ', label: 'Announcer',
-    explanation: `Who would you like to MC your reception? This person will announce things like toasts, cake cutting, etc. and keep things moving.
-    Note that the DJ will allows announce first dances.`
-  },
-  slowPlaylist: { EditComponent: EC.Text_, def: '', label: 'Slow Playlist',
-    explanation: 'Give me a link to a playlist with slow songs you would like at your wedding'
-  },
-  dancePlaylist: { EditComponent: EC.Text_, def: '', label: 'Dance Playlist',
-    explanation: 'Give me a link to a playlist with upbeat, dancy songs for your wedding'
-  },
-  clientMix: { EditComponent: EC.Slider_, def: 0.5, label: 'Client Mix',
-    explanation: 'How much would you like me to stick to the provided playlists?',
-    insight: [
-      'Play songs that fit the vibe',
-      'Play songs that fit the vibe, but be sure to play one of our songs every now and again',
-      'Play an even mix of our songs',
-      'Mostly play our songs, and throw in random songs occasionally as you see fit',
-      'Only play the songs we give you'
-    ]
-  },
-  slowMix: { EditComponent: EC.Slider_, def: 0.2, label: 'Slow Song Mix',
-    explanation: 'What mix of slow songs would you like at the reception?',
-    insight: [
-      'Only play bangers, no slow songs please',
-      'Feel it out, play a slow song on occasion if it feels appropriate',
-      'Play a slow song for every 3 or 4 dancy songs',
-      'Play an even mix of slow/upbeat songs',
-      'Only play slow jams, I wanna cry all reception'
-    ]
-  },
-  strobesOk: { EditComponent: EC.Bool_, def: true, label: 'Strobe Lights?',
-    explanation: 'Can strobe lights be used at the reception?'
-  },
-  lasersOk: { EditComponent: EC.Bool_, def: true, label: 'Lasers?',
-    explanation: 'Can lasers be used at the reception?'
-  },
-  hazeOk: { EditComponent: EC.Bool_, def: true, label: 'Haze?',
-    explanation: 'Can haze be used at the reception? Haze is like fog and makes the lights look cooler'
-  },
-  time: {
-    EditComponent: EC.Time_, def: dayjs().unix(), label: 'Time',
-    valToString: val => dayjs(val).format('HH:mm'),
-    explanation: ''
-  }
+function attendee_string(normalized: number | undefined): string {
+  return `${EC.attendee_count(normalized)}`
 }
 
-export default function Field({ stateKey, selected, state, setState, setSelected }: FieldProps) {
-  const { EditComponent, def, label, valToString, explanation } = fieldsInfo[stateKey]
+function mix_string(normalized: number | undefined): string {
+  return `${Math.round((normalized ?? 0) * 100)}%`
+}
+
+export const fieldsInfo: {
+  [key in keyof State]: {
+    EditComponent: (props: EC.Props<State[key]>) => React.ReactElement
+    def: State[key]
+    label: string
+    valToString?: (val: State[key]) => string
+    explanation?: string
+    insight?: string[]
+  }
+} = {
+  name: {
+    EditComponent: EC.Text_,
+    def: "",
+    label: "Your Name(s)",
+    explanation: "Who will I have the pleasure of assisting?",
+  },
+  date: {
+    EditComponent: EC.Date_,
+    def: dayjs().unix(),
+    label: "Date",
+    valToString: (val) => dayjs(val * 1000).format("MMM, DD, YYYY"),
+    explanation: "When is the wedding?",
+  },
+  location: {
+    EditComponent: EC.Text_,
+    def: "",
+    label: "Location",
+    explanation: "Where will the wedding take place?",
+  },
+  attendeeCount: {
+    EditComponent: EC.Slider_(attendee_string),
+    def: 0.5,
+    label: "Guests",
+    valToString: attendee_string,
+    explanation: `How many guests will attend?`,
+    insight: ["Very Small, We want a dance party with just us", ""],
+  },
+  internet: {
+    EditComponent: EC.Bool_,
+    def: true,
+    label: "Internet?",
+    explanation: `Will there be internet at the venue?`,
+  },
+  planner: {
+    EditComponent: EC.Text_,
+    def: "DJ",
+    label: "Organizer",
+    explanation: `Who should the DJ/Announcer look to for timing of announcements?
+    Note that this can only be 1 person`,
+  },
+  announcer: {
+    EditComponent: EC.Text_,
+    def: "DJ",
+    label: "Announcer",
+    explanation: `Who would you like to MC your reception? This person will announce things like toasts, cake cutting, etc. and keep things moving.
+    Note that the DJ will announce first dances.`,
+  },
+  slowPlaylist: {
+    EditComponent: EC.Text_,
+    def: "",
+    label: "Slow Playlist",
+    explanation:
+      "Give me a link to a playlist with slow songs you would like at your wedding",
+  },
+  dancePlaylist: {
+    EditComponent: EC.Text_,
+    def: "",
+    label: "Dance Playlist",
+    explanation:
+      "Give me a link to a playlist with upbeat, dancy songs for your wedding",
+  },
+  clientMix: {
+    EditComponent: EC.Slider_(mix_string),
+    def: 0.5,
+    label: "Client Mix",
+    valToString: mix_string,
+    explanation:
+      "How much would you like me to stick to the provided playlists?",
+    insight: [
+      "Play songs that fit the vibe",
+      "Play songs that fit the vibe, but play one of our songs every now and again",
+      "Play an even mix of our songs",
+      "Mostly play our songs, but you can throw on another song if it really fits",
+      "Only play the songs we give you",
+    ],
+  },
+  strobesOk: {
+    EditComponent: EC.Bool_,
+    def: true,
+    label: "Strobe Lights?",
+    explanation: "Can strobe lights be used at the reception?",
+  },
+  lasersOk: {
+    EditComponent: EC.Bool_,
+    def: true,
+    label: "Lasers?",
+    explanation: "Can lasers be used at the reception?",
+  },
+  hazeOk: {
+    EditComponent: EC.Bool_,
+    def: true,
+    label: "Haze?",
+    explanation:
+      "Can haze be used at the reception? Haze is like fog and makes the lights look cooler",
+  },
+  time: {
+    EditComponent: EC.Time_,
+    def: dayjs().unix(),
+    label: "Time",
+    valToString: (val) => dayjs(val * 1000).format("HH:mm"),
+    explanation: "",
+  },
+}
+
+export default function Field({
+  stateKey,
+  selected,
+  state,
+  setState,
+  setSelected,
+}: FieldProps) {
+  const { EditComponent, def, label, valToString, explanation } =
+    fieldsInfo[stateKey]
   const fieldInfo = fieldsInfo[stateKey]
-  
+
   const isSelected = stateKey === selected
   const hasBeenEdited = state[stateKey] !== undefined
   if (!hasBeenEdited && !isSelected) return null
 
   const val = state[stateKey]
-
-  console.log(`key: ${stateKey} = ${val}`)
 
   let valString = `${val}`
   if (valToString !== undefined) {
@@ -114,13 +161,19 @@ export default function Field({ stateKey, selected, state, setState, setSelected
     return (
       <Selected>
         <div>
-          <EditComponent value={val} label={label} setField={newVal => setState({
-            ...state,
-            [stateKey]: newVal
-          })} />
+          <EditComponent
+            value={val}
+            label={label}
+            setField={(newVal) =>
+              setState({
+                ...state,
+                [stateKey]: newVal,
+              })
+            }
+          />
           {explanation && <Info>{explanation}</Info>}
         </div>
-        <div style={{height: '2rem'}}/>
+        <div style={{ height: "2rem" }} />
       </Selected>
     )
   } else {
@@ -150,6 +203,63 @@ const NotSelected = styled.div`
   cursor: pointer;
   opacity: 0.5;
   :hover {
-    opacity: 1.0;
+    opacity: 1;
   }
 `
+
+export function saveState(state: State) {
+  let doc = new DocMaker()
+
+  doc.p(`Wedding Outline for ${state.name}\n`)
+
+  for (const key of stateKeys) {
+    let string = `${state[key]}`
+    let valToString = fieldsInfo[key].valToString
+    if (valToString !== undefined) {
+      string = valToString(state[key])
+    }
+
+    doc.p(`${fieldsInfo[key].label}  ${string}`)
+  }
+
+  doc.p(`\nFeel Free to email this to me, and let's start planning!`)
+  doc.p(`spenser0saling@gmail.com`)
+
+  doc.download_as(`Wedding Outline for ${state.name}`)
+}
+
+export function copyState(state: State) {
+  let doc = new DocMaker()
+
+  doc.p(`Wedding Outline for ${state.name}\n`)
+
+  for (const key of stateKeys) {
+    let string = `${state[key]}`
+    let valToString = fieldsInfo[key].valToString
+    if (valToString !== undefined) {
+      string = valToString(state[key])
+    }
+
+    doc.p(`${fieldsInfo[key].label}  ${string}`)
+  }
+
+  doc.copy()
+}
+
+export function emailState(state: State) {
+  let doc = new DocMaker()
+
+  doc.p(`Wedding Outline for ${state.name}\n`)
+
+  for (const key of stateKeys) {
+    let string = `${state[key]}`
+    let valToString = fieldsInfo[key].valToString
+    if (valToString !== undefined) {
+      string = valToString(state[key])
+    }
+
+    doc.p(`${fieldsInfo[key].label}  ${string}`)
+  }
+
+  doc.email(`Wedding Outline for ${state.name}`)
+}
