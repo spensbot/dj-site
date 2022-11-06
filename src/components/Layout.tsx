@@ -1,9 +1,9 @@
 import * as React from "react"
-import Footer from './Footer'
-import { createGlobalStyle } from 'styled-components'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import DayjsUtils from '@date-io/dayjs'
-import { ThemeProvider } from 'styled-components'
+import Footer from "./Footer"
+import { createGlobalStyle } from "styled-components"
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"
+import DayjsUtils from "@date-io/dayjs"
+import { ThemeProvider } from "styled-components"
 import "@fontsource/roboto"
 import "@fontsource/urbanist"
 import "@fontsource/pacifico"
@@ -14,8 +14,8 @@ interface Theme_t {
 }
 
 const theme: Theme_t = {
-  spacing: val => `${val}rem`,
-  sectionSpacing: '5rem',
+  spacing: (val) => `${val}rem`,
+  sectionSpacing: "5rem",
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -49,13 +49,13 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 1.5rem;
   }
   p {
-    font-size: 1.3rem;
+    font-size: 1.0rem;
     margin: 0;
     margin-bottom: 1.3rem;
   }
 `
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
   return (
     <>
       <MuiPickersUtilsProvider utils={DayjsUtils}>
