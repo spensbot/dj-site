@@ -14,7 +14,7 @@ export default function Why({}: Props) {
         alt="A lit wedding party"
       />
       <Cover>
-        <Container bg="#0008">
+        <Container bg="#000a">
           <h2>Why I DJ</h2>
           <p>Simply put, because it's fun!</p>
           <p>

@@ -1,8 +1,8 @@
 import * as React from "react"
 import styled from "styled-components"
-import Container from "../components/Container"
+import Container from "./Container"
 import { StaticImage } from "gatsby-plugin-image"
-import Split from "../components/Split"
+import Split from "./Split"
 
 export default function About() {
   return (

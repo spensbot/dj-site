@@ -1,15 +1,17 @@
 import * as React from "react"
-import styled from 'styled-components'
-import { StaticImage } from 'gatsby-plugin-image'
+import styled from "styled-components"
+import { StaticImage } from "gatsby-plugin-image"
 
 export default function Title() {
   return (
     <Root>
-      <StaticImage style={{height: '100%'}} src="../images/DanceFar3.jpg" alt="A lit wedding party" />
+      <StaticImage
+        style={{ height: "100%" }}
+        src="../images/DanceFar3.jpg"
+        alt="A lit wedding party"
+      />
       <TitleCover>
-        <TitleText>
-          A Night to Remember
-        </TitleText>
+        <TitleText>A Night to Remember</TitleText>
         <SiteText>Spenser Saling, Portland Area Wedding DJ</SiteText>
         {/* <SubtitleText>
           After the ceremony, relax and enjoy a dance party for everyone
@@ -46,7 +48,8 @@ const SiteText = styled.h1`
   margin: 2rem;
   padding: 1rem;
   font-weight: lighter;
-  font-family: 'Urbanist';
+  /* font-family: "Urbanist"; */
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 `
 
 const TitleText = styled.h1`
@@ -56,5 +59,6 @@ const TitleText = styled.h1`
   top: 0;
   margin: 2rem;
   padding: 1rem;
-  font-family: 'Pacifico';
+  /* font-family: "Pacifico"; */
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 `

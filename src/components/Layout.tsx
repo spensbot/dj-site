@@ -1,70 +1,35 @@
-import * as React from "react"
-import Footer from "./Footer"
-import { createGlobalStyle } from "styled-components"
-import { MuiPickersUtilsProvider } from "@material-ui/pickers"
-import DayjsUtils from "@date-io/dayjs"
+import React, { useState } from "react"
 import { ThemeProvider } from "styled-components"
-import "@fontsource/roboto"
-import "@fontsource/urbanist"
-import "@fontsource/pacifico"
+import { GlobalStyle, theme } from "../styles"
+import Footer from "./Footer"
+import { ModalContext, Modal_t } from "./Modal"
 
-interface Theme_t {
-  spacing: (val: number) => string
-  sectionSpacing: string
+interface Props {
+  children: React.ReactNode
 }
 
-const theme: Theme_t = {
-  spacing: (val) => `${val}rem`,
-  sectionSpacing: "5rem",
-}
+const Layout: React.FC<Props> = ({ children }) => {
+  const [modal, _setModal] = useState<Modal_t | null>(null)
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    font-family: "Roboto"
+  const setModal = (modal: Modal_t | null) => {
+    console.log("setModal")
+    _setModal(modal)
   }
-  h1 {
-    font-size: 3rem;
-    margin: 0;
-    margin-bottom: 3rem;
-  }
-  h2 {
-    font-size: 2.5rem;
-    margin: 0;
-    margin-bottom: 2.5rem;
-  }
-  h3 {
-    font-size: 2rem;
-    margin: 0;
-    margin-bottom: 2rem;
-  }
-  h4 {
-    font-size: 1.7rem;
-    margin: 0;
-    margin-bottom: 1.7rem;
-  }
-  h5 {
-    font-size: 1.5rem;
-    margin: 0;
-    margin-bottom: 1.5rem;
-  }
-  p {
-    font-size: 1.0rem;
-    margin: 0;
-    margin-bottom: 1.3rem;
-  }
-`
 
-export default function Layout({ children }) {
   return (
-    <>
-      <MuiPickersUtilsProvider utils={DayjsUtils}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          {children}
-          <Footer />
-        </ThemeProvider>
-      </MuiPickersUtilsProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <ModalContext.Provider
+        value={{
+          modal,
+          setModal,
+        }}
+      >
+        <GlobalStyle />
+        <main>{children}</main>
+        <Footer />
+      </ModalContext.Provider>
+    </ThemeProvider>
   )
 }
+
+export default Layout

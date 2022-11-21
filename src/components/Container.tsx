@@ -1,7 +1,12 @@
 import React from "react"
 import styled from "styled-components"
 
-export default function Container({ children, bg }: { children; bg?: string }) {
+type Props = {
+  children: React.ReactNode
+  bg?: string
+}
+
+export default function Container({ children, bg }: Props) {
   return <Root style={{ backgroundColor: bg }}>{children}</Root>
 }
 

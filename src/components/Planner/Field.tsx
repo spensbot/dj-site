@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { State, stateKeys } from "./State"
-import dayjs from "dayjs"
 import * as EC from "./EditComponents"
 import DocMaker from "../../util/DocMaker"
 
@@ -39,10 +38,10 @@ export const fieldsInfo: {
   },
   date: {
     EditComponent: EC.Date_,
-    def: dayjs().unix(),
+    def: "",
     label: "Date",
-    valToString: (val) => dayjs(val * 1000).format("MMM, DD, YYYY"),
-    explanation: "When is the wedding?",
+    // valToString: (val) => format(new Date(val), "MMM, dd, yyyy"),
+    explanation: "What day is the wedding?",
   },
   location: {
     EditComponent: EC.Text_,
@@ -128,10 +127,10 @@ export const fieldsInfo: {
   },
   time: {
     EditComponent: EC.Time_,
-    def: dayjs().unix(),
+    def: "",
     label: "Time",
-    valToString: (val) => dayjs(val * 1000).format("HH:mm"),
-    explanation: "",
+    // valToString: (val) => format(new Date(val), "HH:mm"),
+    explanation: "What time is the wedding",
   },
 }
 

@@ -1,9 +1,7 @@
-import dayjs from "dayjs"
-
 export interface State {
   name: string
-  date: number // unix
-  time: number
+  date: string // unix
+  time: string
   location: string
   // indoor: boolean
   attendeeCount: number
@@ -56,16 +54,6 @@ export const stateKeys: (keyof State)[] = [
 //   strobesOk: "Strobe Light Ok?",
 //   lasersOk: "Lasers Ok?",
 //   hazeOk: "Haze Ok?",
-// }
-
-// export const toString: {
-//   [key in keyof State]?: (val: State[key]) => string
-// } = {
-//   date: (unix_s: number) => dayjs(unix_s * 1000).format("MMM, DD, YYYY"),
-//   time: (unix_s: number) => dayjs(unix_s * 1000).format("HH:mm"),
-//   attendeeCount: (normalized: number) =>
-//     `${Math.round(normalized ** 2 * 1000)}`,
-//   clientMix: (normalized: number) => `${Math.round(normalized * 100)}`,
 // }
 
 export interface TimeSlot {

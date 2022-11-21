@@ -36,8 +36,8 @@ export default function Planner() {
     <Container>
       <PlanningTitle>Wedding Plan</PlanningTitle>
       <PlanningSubtitle>
-        <p>This form will help me plan for your reception</p>
-        <p>We can work out the details and create a contract later :)</p>
+        <p>This form will help me plan for the big day.</p>
+        <p>We can work out the details and create a contract later!</p>
       </PlanningSubtitle>
       <Fields>
         {stateKeys.map((stateKey) => (
@@ -57,6 +57,9 @@ export default function Planner() {
         setSelected={setSelected}
         resetState={resetState}
       />
+      <div style={{ height: "8rem" }} />
+      <h2>Contact</h2>
+      <p>Spenser0Saling@gmail.com</p>
     </Container>
   )
 }

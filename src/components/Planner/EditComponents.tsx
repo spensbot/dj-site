@@ -1,8 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Slider, TextField, Switch } from "@material-ui/core"
-import { DatePicker, TimePicker } from "@material-ui/pickers"
-import dayjs from "dayjs"
+import { Slider, TextField, Switch } from "@mui/material"
 
 export interface Props<T> {
   value: T
@@ -10,32 +8,26 @@ export interface Props<T> {
   setField: (newVal: T) => void
 }
 
-export const Date_ = ({ value, label, setField }: Props<number>) => {
-  console.log("value", value)
-  let date = dayjs(value * 1000)
-  console.log("date", date)
-
+export const Date_ = ({ value, label, setField }: Props<string>) => {
   return (
-    <DatePicker
+    <TextField
+      id={label}
+      value={value}
       label={label}
-      value={date}
-      views={["month", "date", "year"]}
-      onChange={(newDate) => {
-        console.log("newDate", newDate)
-        console.log("newDate.unix()", newDate?.unix())
-        setField(newDate?.unix() ?? 0)
-      }}
+      onChange={(e) => setField(e.target.value)}
+      fullWidth
     />
   )
 }
 
-export const Time_ = ({ value, label, setField }: Props<number>) => {
-  let date = dayjs(value * 1000)
+export const Time_ = ({ value, label, setField }: Props<string>) => {
   return (
-    <TimePicker
+    <TextField
+      id={label}
+      value={value}
       label={label}
-      value={date}
-      onChange={(newDate) => setField(newDate?.unix() ?? 0)}
+      onChange={(e) => setField(e.target.value)}
+      fullWidth
     />
   )
 }

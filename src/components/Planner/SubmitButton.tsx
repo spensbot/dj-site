@@ -1,9 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 import { State, stateKeys } from "./State"
-import { Button } from "@material-ui/core"
+import { Button } from "@mui/material"
 import { copyState, emailState, fieldsInfo, saveState } from "./Field"
-import { SetModalContext } from "../Context"
+import { ModalContext } from "../Modal"
 
 interface Props {
   state: State
@@ -23,7 +23,7 @@ export default function SubmitButton({
   setSelected,
   resetState,
 }: Props) {
-  const setModal = React.useContext(SetModalContext)
+  const { modal, setModal } = React.useContext(ModalContext)
 
   const next = nextToComplete(state)
 
@@ -38,21 +38,26 @@ export default function SubmitButton({
   }
 
   const onReset = () => {
-    setModal({
-      title: "Start Over?",
-      text: "All fields will be erased",
-      button: {
-        label: "Yes",
-        onClick: () => {
-          resetState()
-          setModal(null)
-        },
-      },
-      secondaryButton: {
-        label: "Nevermind",
-        onClick: () => setModal(null),
-      },
-    })
+    // I hate this method, but I don't have time to figure out how to get a modal working in Gatsby
+    if (confirm("Start Over?\nAll fields will be erased")) {
+      resetState()
+    }
+
+    // setModal({
+    //   title: "Start Over?",
+    //   text: "All fields will be erased",
+    //   button: {
+    //     label: "Yes",
+    //     onClick: () => {
+    //       resetState()
+    //       setModal(null)
+    //     },
+    //   },
+    //   secondaryButton: {
+    //     label: "Nevermind",
+    //     onClick: () => setModal(null),
+    //   },
+    // })
   }
 
   return (

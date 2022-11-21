@@ -1,8 +1,7 @@
-import { Button } from '@material-ui/core'
-import React, { useContext, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import styled from 'styled-components'
-import { ModalContext } from './Context'
+import { Button } from "@mui/material"
+import React, { useContext, useEffect } from "react"
+import ReactDOM from "react-dom"
+import styled from "styled-components"
 
 export interface ModalButton_t {
   label: string
@@ -16,11 +15,26 @@ export interface Modal_t {
   secondaryButton?: ModalButton_t
 }
 
-const portalRoot = typeof document !== `undefined` ? document.getElementById('portal') : null
+export type ModalState = {
+  modal: Modal_t | null
+  setModal: (modal: Modal_t | null) => void
+}
+
+const ModalContext = React.createContext<ModalState>({
+  modal: null,
+  setModal: (modal) => {},
+})
+
+export { ModalContext }
+
+const portalRoot =
+  typeof document !== `undefined` ? document.getElementById("portal") : null
 
 export default function Modal() {
-  const modal = useContext(ModalContext)
-  
+  const { modal, setModal } = useContext(ModalContext)
+
+  console.log("modal")
+
   if (modal === null) return null
 
   const { title, text, button, secondaryButton } = modal
@@ -30,8 +44,19 @@ export default function Modal() {
       <Modal_>
         <Title>{title}</Title>
         <Text>{text}</Text>
-        <Button variant='contained' color='primary' style={{marginRight: '1rem'}} onClick={button.onClick}>{button.label}</Button>
-        { secondaryButton && <Button variant='outlined' onClick={secondaryButton.onClick}>{secondaryButton.label}</Button> }
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginRight: "1rem" }}
+          onClick={button.onClick}
+        >
+          {button.label}
+        </Button>
+        {secondaryButton && (
+          <Button variant="outlined" onClick={secondaryButton.onClick}>
+            {secondaryButton.label}
+          </Button>
+        )}
       </Modal_>
     </Root>
   )
@@ -55,7 +80,7 @@ const Root = styled.div`
 
 const Modal_ = styled.div`
   padding: 3rem;
-  -webkit-box-shadow: 5px 5px 30px 0px #00000088; 
+  -webkit-box-shadow: 5px 5px 30px 0px #00000088;
   box-shadow: 5px 5px 30px 0px #00000088;
   & > * {
     margin-bottom: 1rem;
