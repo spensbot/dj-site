@@ -1,0 +1,7 @@
+[build.environment]
+  NODE_VERSION = "18.12.1"
+  NPM_VERSION = "8.19.2" 
+
+[build]
+  command = "gatsby build"
+  publish = "public"
