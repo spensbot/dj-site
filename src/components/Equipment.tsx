@@ -25,7 +25,7 @@ const Content = () => (
       </p>
       <p>
         Most importantly, my lighting setup runs on a app I designed myself.{" "}
-        <Link href="captivatesynth.com">Captivate</Link> allows me to
+        <Link href="https://captivatesynth.com">Captivate</Link> allows me to
         synchronize every light to the music in a way rarely seen outside of a
         high-production show.
       </p>
